@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  laravel_app:
+    build: .
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=ile-apaindegi-testing-rds.cjeu6comwm0y.us-east-1.rds.amazonaws.com
+      - DB_PORT=3306
+      - DB_DATABASE=santurtziTesting
+      - DB_USERNAME=santurtziTesting
+      - DB_PASSWORD='santurtzi123'
+    command: >
+      sh -c "composer install --no-interaction && 
+             php artisan key:generate --force && 
+             php artisan migrate --force && 
+             php artisan serve --host=0.0.0.0 --port=8000"

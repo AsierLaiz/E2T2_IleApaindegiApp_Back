@@ -1,40 +1,35 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Erabiltzailea extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 
-    protected $table = 'erabiltzaileak'; // tabla real
-    protected $primaryKey = 'id';
+    protected $table = 'erabiltzaileak';
 
     protected $fillable = [
         'erabiltzaile_izena',
         'posta_elek',
-        'password',
         'rola',
+        'password',
     ];
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
-
-    protected $casts = [
-        'password' => 'hashed',
-    ];
-
 
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
