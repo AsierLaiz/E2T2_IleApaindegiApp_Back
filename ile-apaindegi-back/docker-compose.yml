@@ -6,19 +6,29 @@ services:
     container_name: laravel_app
     restart: unless-stopped
     working_dir: /var/www
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     volumes:
       - .:/var/www
     ports:
       - "8000:8000"
     environment:
+      - APP_NAME=IleApaindegi
+      - APP_ENV=production
+      - APP_KEY=base64:uS9vXG7z7OIn/1M3GqY8yXvL3pQ8YfV9WjK6LzM4N5E= # Clave fija para que no cambie al reiniciar
+      - APP_DEBUG=true
+      - APP_URL=http://localhost
+      
+      # Configuración de Base de Datos
       - DB_CONNECTION=mysql
-      - DB_HOST=ile-apaindegi-testing-rds.cjeu6comwm0y.us-east-1.rds.amazonaws.com
+      - DB_HOST=ia-rds.ckh0gwvuxkn7.us-east-1.rds.amazonaws.com
       - DB_PORT=3306
-      - DB_DATABASE=santurtziTesting
+      - DB_DATABASE=ile_apaindegi
       - DB_USERNAME=santurtziTesting
-      - DB_PASSWORD='santurtzi123'
+      - DB_PASSWORD=A2fKhg:Y)7ln7mN_p{\FW
     command: >
-      sh -c "composer install --no-interaction && 
-             php artisan key:generate --force && 
-             php artisan migrate --force && 
+      sh -c "composer install --no-interaction &&
+             php artisan config:clear &&
+             php artisan migrate --force &&
              php artisan serve --host=0.0.0.0 --port=8000"
